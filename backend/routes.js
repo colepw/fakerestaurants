@@ -9,7 +9,7 @@ router.get('/products', async (req, res) => {
     try {
         const response = await axios.post(SHOPIFY_GRAPHQL_URL, {
             query: `{
-                products(first: 10) {
+                products(first: 16) {
                     edges {
                         node {
                             id

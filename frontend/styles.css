@@ -24,6 +24,7 @@ header {
 .product {
     background: white;
     padding: 10px;
+    border: 3px solid #ffaa87;
     border-radius: 8px;
     text-align: center;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -38,6 +39,12 @@ header {
     width: 100%;
     height: auto;
     border-radius: 4px;
+}
+
+#product-list {
+    margin: 10px auto;
+    border: 2px solid #ffaa87;
+    min-height: 100px;
 }
 
 @media (max-width: 1024px) {
