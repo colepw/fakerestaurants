@@ -2,11 +2,13 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const routes = require('./routes');
 require('dotenv').config();
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use('/api', routes);
 
 const SHOPIFY_STORE = process.env.SHOPIFY_STORE;
 const SHOPIFY_API_KEY = process.env.SHOPIFY_API_KEY;
