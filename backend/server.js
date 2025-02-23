@@ -33,6 +33,7 @@ app.get('/products', async (req, res) => {
                             variants(first: 1) {
                                 edges {
                                     node {
+                                        id
                                         price
                                     }
                                 }
@@ -49,6 +50,44 @@ app.get('/products', async (req, res) => {
         });
 
         res.json(response.data.data.products.edges.map(edge => edge.node));
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Cart management
+let cart = [];
+app.post('/cart/add', (req, res) => {
+    const { productId, price, quantity } = req.body;
+    const existingItem = cart.find(item => item.productId === productId);
+    if (existingItem) {
+        existingItem.quantity += quantity;
+    } else {
+        cart.push({ productId, price, quantity });
+    }
+    res.json({ cart });
+});
+
+app.get('/cart', (req, res) => {
+    res.json({ cart });
+});
+
+app.post('/cart/clear', (req, res) => {
+    cart = [];
+    res.json({ message: 'Cart cleared' });
+});
+
+// Order tracking
+app.post('/order/track', async (req, res) => {
+    const { orderId } = req.body;
+    try {
+        const response = await axios.get(`https://${SHOPIFY_STORE}.myshopify.com/admin/api/2023-10/orders/${orderId}.json`, {
+            headers: {
+                'X-Shopify-Access-Token': SHOPIFY_API_PASSWORD,
+                'Content-Type': 'application/json'
+            }
+        });
+        res.json(response.data);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
